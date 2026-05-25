@@ -401,8 +401,6 @@ app.get("/mailsend", function (req, resp) {
             //console.log(result);
         }
     });
-});p.send(result);
-            //console.log(result);
-        }
-    });
 });
+
+module.exports = app;
