@@ -61,7 +61,7 @@
             $("#insta").val(jsonAry[0].insta);
             $("#fb").val(jsonAry[0].fb);
             $("#youtube").val(jsonAry[0].youtube);
-            $("#prev").prop("src", "uploads/" + jsonAry[0].picpath);
+            $("#prev").prop("src", jsonAry[0].picpath && jsonAry[0].picpath.startsWith('http') ? jsonAry[0].picpath : "uploads/" + jsonAry[0].picpath);
             $("#hdn").val(jsonAry[0].picpath);
   
           }).fail(function (err) {

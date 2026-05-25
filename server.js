@@ -2,11 +2,15 @@ require("dotenv").config();
 var express = require("express");
 var mysql2 = require("mysql2");
 var fileuploader = require("express-fileupload");
+const { put } = require("@vercel/blob");
 let app = express();
 
-app.listen(2000, function () {
-    console.log("success");
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(2000, function () {
+        console.log("success");
+    });
+}
+module.exports = app;
 app.use(express.static("public"));
 
 app.use(express.urlencoded("true"));
@@ -120,14 +124,20 @@ app.get("/login-process", function (req, resp) {
         }
     })
 })
-app.post("/save-process", function (req, resp) {
+app.post("/save-process", async function (req, resp) {
     console.log(req.body);
     //let field=req.body.field;
     let fileName = "";
-    if (req.files != null) {
-        fileName = req.files.ppic.name;
-        let path = __dirname + "/public/uploads/" + fileName;
-        req.files.ppic.mv(path);
+    if (req.files != null && req.files.ppic) {
+        try {
+            const { url } = await put(req.files.ppic.name, req.files.ppic.data, {
+                access: 'public',
+            });
+            fileName = url;
+        } catch (error) {
+            console.error("Vercel Blob Error:", error);
+            fileName = "nopic.jpg";
+        }
     }
     else {
         fileName = "nopic.jpg";
@@ -144,14 +154,20 @@ app.post("/save-process", function (req, resp) {
 })
 
 
-app.post("/infl-profile-update", function (req, resp) {
+app.post("/infl-profile-update", async function (req, resp) {
     console.log(req.body);
     //let field=req.body.field; 
     let fileName = "";
-    if (req.files != null) {
-        fileName = req.files.ppic.name;
-        let path = __dirname + "/public/uploads/" + fileName;
-        req.files.ppic.mv(path);
+    if (req.files != null && req.files.ppic) {
+        try {
+            const { url } = await put(req.files.ppic.name, req.files.ppic.data, {
+                access: 'public',
+            });
+            fileName = url;
+        } catch (error) {
+            console.error("Vercel Blob Error:", error);
+            fileName = req.body.hdn;
+        }
     }
     else{
         fileName=req.body.hdn;

@@ -16,6 +16,11 @@
         var controller = module.controller("mycontroller", function ($scope, $http) {
             $scope.jsonArrayAll;
             $scope.ModelObj;
+            $scope.getPicUrl = function(picpath) {
+                if (!picpath) return "uploads/nopic.jpg";
+                if (picpath.startsWith('http')) return picpath;
+                return "uploads/" + picpath;
+            };
             $scope.fillcity = function () {
                 //alert();
                 let field = $scope.selfield;
@@ -178,7 +183,7 @@
             <div class="row">
                 <div class="col-md-3" ng-repeat="obj in jsonArrayAll">
                     <div class="card mt-5">
-                        <center> <img src="uploads/{{obj.picpath}}" alt="..." height="50%" width="50%"></center>
+                        <center> <img ng-src="{{getPicUrl(obj.picpath)}}" alt="..." height="50%" width="50%"></center>
                         <div class="card-body">
                             <h5 class="card-title"><u>Name:</u> {{obj.iname}}</h5>
                             <h5 class="card-title"><u>Fields:</u> {{obj.field}}</h5>
@@ -198,7 +203,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="uploads/{{ModelObj.picpath}}" alt="Card image cap">
+                        <img class="card-img-top" ng-src="{{getPicUrl(ModelObj.picpath)}}" alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title">{{ModelObj.iname}}</h5>
                         </div>
