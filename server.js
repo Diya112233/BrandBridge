@@ -114,8 +114,12 @@ app.get("/add", function (req, resp) {
 app.get("/login-process", function (req, resp) {
     mysql.query("select * from users where email=? and pwd=?", [req.query.txtemail, req.query.txtpwd], function (err,result) {
         if (err == null) {
-            console.log(result[0].utype);
-            resp.send(result[0].utype); 
+            if (result.length > 0) {
+                console.log(result[0].utype);
+                resp.send(result[0].utype); 
+            } else {
+                resp.send("Invalid");
+            }
         }
         else {
             console.log("err");
