@@ -10,7 +10,6 @@ if (process.env.NODE_ENV !== 'production') {
         console.log("success");
     });
 }
-module.exports = app;
 app.use(express.static("public"));
 
 app.use(express.urlencoded("true"));
@@ -399,6 +398,10 @@ app.get("/mailsend", function (req, resp) {
                 }
             });
             resp.send(result);
+            //console.log(result);
+        }
+    });
+});p.send(result);
             //console.log(result);
         }
     });
